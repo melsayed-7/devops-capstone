@@ -5,8 +5,8 @@ WORKDIR /app
 COPY app.py  /app/
 
 COPY requirements.txt /app/
-
-RUN pip install --upgrade pip && pip install -r requirements.txt
+# pip install --upgrade pip &&
+RUN  pip install -r requirements.txt
 
 # RUN pip install -r requirements.txt
 
