@@ -127,9 +127,9 @@ workflows:
   capstone:
     jobs:
       - lint
-      - build-test-push:
-          requires:
-            - lint
+      # - build-test-push:
+      #     requires:
+      #       - lint
       # - create-cluster:
       #     cluster-name:  udacity-capstone-project
       #     requires:
