@@ -48,22 +48,22 @@ jobs:
           name: Build, test and push docker image
           command: |
             docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PWD}
-            docker build -t miduskas/aws-capstone -t miduskas/aws-capstone:${CIRCLE_WORKFLOW_ID:0:7} .
-            docker run -d --rm --name flaskapp -p 8000:5000 miduskas/aws-capstone:${CIRCLE_WORKFLOW_ID:0:7}
+            docker build -t melsayed7/aws-capstone -t melsayed7/aws-capstone:${CIRCLE_WORKFLOW_ID:0:7} .
+            docker run -d --rm --name flaskapp -p 8000:8080 melsayed7/aws-capstone:${CIRCLE_WORKFLOW_ID:0:7}
             sleep 5
             docker container ls
             export url="http://localhost:8000"
             export response=$(curl -s $url)
             echo "This is response $response"
-            if [[ $response == *"Mislav"* ]]; then
+            if [[ $response == *"Moustafa"* ]]; then
               docker stop flaskapp
             else
               docker stop flaskapp
               exit 1
             fi
             echo "CIRCLE CI WORKFLOW ID ${CIRCLE_WORKFLOW_ID:0:7}"
-            docker push miduskas/aws-capstone:${CIRCLE_WORKFLOW_ID:0:7}
-            docker push miduskas/aws-capstone:latest
+            docker push melsayed7/aws-capstone:${CIRCLE_WORKFLOW_ID:0:7}
+            docker push melsayed7/aws-capstone:latest
 
   create-cluster:
     executor: aws-eks/python3
@@ -140,7 +140,7 @@ workflows:
             - create-cluster
       - aws-eks/update-container-image:
           cluster-name: udacity-capstone-project
-          container-image-updates: 'aws-capstone=miduskas/aws-capstone:${CIRCLE_WORKFLOW_ID:0:7}'
+          container-image-updates: 'aws-capstone=melsayed7/aws-capstone:${CIRCLE_WORKFLOW_ID:0:7}'
           get-rollout-status: true
           record: true
           requires:
