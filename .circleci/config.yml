@@ -127,29 +127,29 @@ workflows:
   capstone:
     jobs:
       - lint
-      # - build-test-push:
-      #     requires:
-      #       - lint
-      # - create-cluster:
-      #     cluster-name:  udacity-capstone-project
-      #     requires:
-      #       - build-test-push
-      # - create-deployment:
-      #     cluster-name:  udacity-capstone-project
-      #     requires:
-      #       - create-cluster
-      # - aws-eks/update-container-image:
-      #     cluster-name: udacity-capstone-project
-      #     container-image-updates: 'aws-capstone=miduskas/aws-capstone:${CIRCLE_WORKFLOW_ID:0:7}'
-      #     get-rollout-status: true
-      #     record: true
-      #     requires:
-      #       - create-deployment
-      #     resource-name:  deployment/aws-capstone
-      # - test-cluster:
-      #     cluster-name:  udacity-capstone-project
-      #     requires:
-      #       - aws-eks/update-container-image
+      - build-test-push:
+          requires:
+            - lint
+      - create-cluster:
+          cluster-name:  udacity-capstone-project
+          requires:
+            - build-test-push
+      - create-deployment:
+          cluster-name:  udacity-capstone-project
+          requires:
+            - create-cluster
+      - aws-eks/update-container-image:
+          cluster-name: udacity-capstone-project
+          container-image-updates: 'aws-capstone=miduskas/aws-capstone:${CIRCLE_WORKFLOW_ID:0:7}'
+          get-rollout-status: true
+          record: true
+          requires:
+            - create-deployment
+          resource-name:  deployment/aws-capstone
+      - test-cluster:
+          cluster-name:  udacity-capstone-project
+          requires:
+            - aws-eks/update-container-image
       # - aws-eks/delete-cluster:
       #    cluster-name:  udacity-capstone-project
       #    requires:
