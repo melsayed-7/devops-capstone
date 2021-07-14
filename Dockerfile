@@ -12,6 +12,6 @@ RUN  pip install -r requirements.txt
 
 # --trusted-host pypi.python.org
 
-EXPOSE 8080
+EXPOSE 5000 
 
 CMD ["python", "app.py"]

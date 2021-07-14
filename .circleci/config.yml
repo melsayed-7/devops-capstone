@@ -14,7 +14,8 @@ executors:
 
 jobs:
   lint:
-    executor: python
+    docker:
+      - image: circleci/python:3.7.3-stretch
     steps:
       - checkout
       - restore_cache:
@@ -51,16 +52,19 @@ jobs:
             docker build -t melsayed7/aws-capstone -t melsayed7/aws-capstone:${CIRCLE_WORKFLOW_ID:0:7} .
             docker run -d --rm --name flaskapp -p 8000:8080 melsayed7/aws-capstone:${CIRCLE_WORKFLOW_ID:0:7}
             sleep 5
+
             docker container ls
             export url="http://localhost:8000"
             export response=$(curl -s $url)
             echo "This is response $response"
+
             if [[ $response == *"Moustafa"* ]]; then
               docker stop flaskapp
             else
               docker stop flaskapp
               exit 1
             fi
+
             echo "CIRCLE CI WORKFLOW ID ${CIRCLE_WORKFLOW_ID:0:7}"
             docker push melsayed7/aws-capstone:${CIRCLE_WORKFLOW_ID:0:7}
             docker push melsayed7/aws-capstone:latest
@@ -94,6 +98,7 @@ jobs:
         description: |
           Name of the EKS cluster
         type: string
+
     steps:
       - checkout
       - kubernetes/install
@@ -134,10 +139,12 @@ workflows:
           cluster-name:  udacity-capstone-project
           requires:
             - build-test-push
+
       - create-deployment:
           cluster-name:  udacity-capstone-project
           requires:
             - create-cluster
+
       - aws-eks/update-container-image:
           cluster-name: udacity-capstone-project
           container-image-updates: 'aws-capstone=melsayed7/aws-capstone:${CIRCLE_WORKFLOW_ID:0:7}'
@@ -146,6 +153,7 @@ workflows:
           requires:
             - create-deployment
           resource-name:  deployment/aws-capstone
+
       - test-cluster:
           cluster-name:  udacity-capstone-project
           requires:

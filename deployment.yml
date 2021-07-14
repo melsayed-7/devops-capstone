@@ -21,7 +21,7 @@ spec:
         app: aws-capstone
     spec:
       containers:
-        - image: miduskas/aws-capstone
+        - image: melsayed7/aws-capstone
           imagePullPolicy: Always
           name: aws-capstone
           ports:
